@@ -14,7 +14,12 @@ class SearchBloc{
     "DART",
     "FLUTTER",
     "VUEJS",
-    "TYPESCRIPT"
+    "TYPESCRIPT",
+    "test 1",
+    "test 2",
+    "test 3",
+    "test 4",
+    "test 5",
   ]);
 
   StreamController<SearchEvent> eventController  = StreamController();
@@ -25,7 +30,24 @@ class SearchBloc{
     eventController.stream.listen((event) {
       if (event is QueryEvent){
         //..
+        filter(event.query);
       }
+    });
+  }
+
+  void filter(String query){
+    if (query.isEmpty){
+      stateController.sink.add(state);
+      return;
+    }
+    Future.delayed(Duration(seconds: 1),(){
+      List<String> newList = [];
+      state.listLanguage.forEach((element) {
+        if(element.toLowerCase().contains(query.toLowerCase())){
+          newList.add(element);
+        }
+      });
+      stateController.sink.add(SearchState(listLanguage: newList));
     });
   }
 
